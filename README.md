@@ -9,8 +9,7 @@ The repository starts intentionally small: common policies and project foundatio
 
 FLAMORIS is open-source software for creative work and AI-native production.
 
-Use it however you like.\nFork it. Modify it. Build something strange or beautiful with it.
-
+Use it however you like.
 Commercial use is welcome and does not require permission.
 If you'd like, we'd be happy to hear what you used FLAMORIS for.
 This is completely optional.
