@@ -52,3 +52,13 @@ FLAMORISは元気になって育ちます。🌱
 Code in this repository is licensed under the [Apache License 2.0](LICENSE), unless otherwise noted.
 
 AI models, model weights, datasets, media, and other non-code assets may use separate licenses. Their applicable licenses must be stated alongside those assets.
+
+
+## Related repositories
+
+- [FLAMORIS 2D](https://github.com/flamoris-jp/flamoris-2D) — 2D animation and character authoring
+- [FLAMORIS Cutwork](https://github.com/flamoris-jp/flamoris-cutwork) — image decomposition, repair, and part preparation
+- [FLAMORIS Kachinco](https://github.com/flamoris-jp/flamoris-kachinco) — AI-native video editing and compositing
+- [FLAMORIS organization configuration](https://github.com/flamoris-jp/.github) — shared GitHub profile and community health files
+
+Shared infrastructure such as logging and MCP foundations may be split into dedicated repositories as their boundaries become clear.
