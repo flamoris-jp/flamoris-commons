@@ -59,6 +59,8 @@ AI models, model weights, datasets, media, and other non-code assets may use sep
 - [FLAMORIS 2D](https://github.com/flamoris-jp/flamoris-2D) — 2D animation and character authoring
 - [FLAMORIS Cutwork](https://github.com/flamoris-jp/flamoris-cutwork) — image decomposition, repair, and part preparation
 - [FLAMORIS Kachinco](https://github.com/flamoris-jp/flamoris-kachinco) — AI-native video editing and compositing
+- [FLAMORIS Logging](https://github.com/flamoris-jp/flamoris-logging) — shared structured logging and diagnostics foundation
+- [FLAMORIS MCP Core](https://github.com/flamoris-jp/flamoris-mcp-core) — shared MCP infrastructure for FLAMORIS applications and tools
 - [FLAMORIS organization configuration](https://github.com/flamoris-jp/.github) — shared GitHub profile and community health files
 
-Shared infrastructure such as logging and MCP foundations may be split into dedicated repositories as their boundaries become clear.
+Shared infrastructure is split into dedicated repositories when its boundary is clear enough to stand on its own.
