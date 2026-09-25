@@ -6,9 +6,7 @@ FLAMORIS Commons exists to provide shared foundations for the FLAMORIS ecosystem
 
 ## Before contributing
 
-For small fixes, feel free to open a pull request directly.
-
-For larger changes, new shared abstractions, or changes that affect multiple FLAMORIS applications, please open an issue first so the intended boundary can be discussed before implementation.
+Issues are welcome from everyone. Pull requests are accepted only from repository collaborators. If you would like to propose a fix, shared abstraction, or change that affects multiple FLAMORIS applications, please open an Issue so the intended boundary can be discussed before implementation.
 
 Shared code should only move into Commons when it is genuinely reusable. Avoid creating abstractions only because two pieces of code happen to look similar.
 
@@ -47,9 +45,7 @@ FLAMORIS Commonsは、FLAMORIS全体で再利用する共通基盤を置くた�
 
 ## 変更を始める前に
 
-小さな修正は、そのままPull Requestを送っていただいて構いません。
-
-大きな変更、新しい共通抽象化、複数のFLAMORISアプリに影響する変更は、実装前にIssueで意図や境界を相談してください。
+Issueはどなたでも歓迎します。Pull Requestはリポジトリのcollaboratorのみ受け付けています。修正、新しい共通抽象化、複数のFLAMORISアプリに影響する変更の提案は、Issueからお願いします。
 
 見た目が似ているという理由だけで共通化せず、本当に再利用できるものだけをCommonsへ移します。
 
