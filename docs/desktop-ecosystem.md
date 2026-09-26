@@ -227,36 +227,239 @@ The desktop family can connect to the broader FLAMORIS AI ecosystem through expl
 
 See [flamoris-jp/flamoris-ai](https://github.com/flamoris-jp/flamoris-ai) for the AI-facing repository map and cross-service architecture.
 
+
 ---
 
 ## 日本語
 
-この文書は、FLAMORISのWindows / Desktop系アプリと共通基盤の「全体地図」です。
+この文書は、FLAMORISのWindows / Desktop系アプリと共通.NET基盤の**横断地図**です。
 
-主な制作の流れは、
+ここでは変化しにくい責任範囲、authority、依存方向、アプリ間の受け渡しを整理します。細かな実装状況、release gate、未解決Issue、直近roadmapは各Repositoryを正とします。
+
+## ひと目で見る制作フロー
 
 ```text
 イラスト
-  ↓
-Cutwork
-  ↓ .flimg
+  |
+  v
+FLAMORIS Cutwork
+画像の切り分け / 修復 / パーツ準備
+  |
+  | .flimg
+  v
 FLAMORIS 2D
-  ↓ 映像
-Kachinco
-  ↓
-最終映像
+Mesh / Rig / Deform / Animation / shot export
+  |
+  | rendered media
+  v
+FLAMORIS Kachinco
+timeline編集 / compositing / 最終映像の組み立て
 ```
 
-です。ただし、これは便利な制作フローであって、各アプリが互いを必須依存にするという意味ではありません。
+これは便利な制作フローであって、必須のruntime依存関係ではありません。各アプリは単独でも利用でき、それぞれが自分のDocument / Project / 編集挙動のauthorityを持ちます。
 
-- **Cutwork** は素材の切り分け、マスク、修復、Parts / Layers、`.flimg` を担当します。
-- **FLAMORIS 2D** はMesh、Rig、Deform、Animation、Preview、shot exportを担当します。
-- **Kachinco** はtimeline編集、compositing、caption、AI-assisted editing、最終映像の組み立てを担当します。
-- **Flamoris.Logging** は共通ログ・診断基盤です。
-- **Flamoris.Mcp.Core** はMCP transport、permission、capability、revocation、live attachなどの共通基盤です。
+## 🎨 制作アプリ
 
-重要なのは、**各アプリ自身がProject / Document / Undo / Redoのauthorityを持ち続ける**ことです。
+### FLAMORIS Cutwork
 
-MCPやAIは第二のeditorを作らず、各アプリの通常の編集経路を使います。Loggingも状態のauthorityにはなりません。
+Repository: [flamoris-jp/flamoris-cutwork](https://github.com/flamoris-jp/flamoris-cutwork)
 
-詳細な実装状況は各リポジトリを正とし、この文書には変化しにくい全体構造だけを置きます。
+Cutworkは、アニメーションに使うイラスト素材を準備するアプリです。
+
+主な責任範囲:
+
+- 動かしたいパーツの切り分け
+- Mask / repair workflow
+- 隠れた領域の露出・再構築
+- Parts / Layersの整理
+- 下流で使うFLAMORIS image project formatの書き出し
+
+現在の大きな構成:
+
+- C# / .NET 10 / WPFがproduction implementation
+- 現在のwriterは `.flimg` v2、v1 read/migrationも維持
+- self-contained Windows packagingあり
+- Live MCPは共通MCP Coreを使うが、Undo/RedoのauthorityはCutwork本体に残る
+
+詳細な実装状況とacceptanceはCutwork側のREADME、roadmap、ADR、Issueを正とします。
+
+### FLAMORIS 2D
+
+Repository: [flamoris-jp/flamoris-2D](https://github.com/flamoris-jp/flamoris-2D)
+
+FLAMORIS 2Dは、レイヤー素材から短いアニメーションshotを作るアプリです。
+
+主な責任範囲:
+
+- PSD / Cutwork `.flimg` import
+- part配置
+- mesh authoring
+- bone / warp / skinning / deformation
+- Key Arts / transition
+- reusable AnimationClip / Sequence authoring
+- preview / shot export
+
+現在の大きな構成:
+
+- Native .NET 10 / WPFの Source → Mesh → Rig → Deform → Animation → Preview → Export はproduction candidate
+- Native editorは既存Product Host / EditorSessionをauthorityとして使い、別のproject modelを作らない
+- Native Live MCPは共通MCP Core transportを使い、編集は同じapplication historyへ入る
+- Native cutover acceptanceが完了するまではElectronがdefault installed/released shell
+
+詳細なmigration evidenceとrelease gateは2D側を正とします。
+
+### FLAMORIS Kachinco
+
+Repository: [flamoris-jp/flamoris-kachinco](https://github.com/flamoris-jp/flamoris-kachinco)
+
+Kachincoは、映像を組み立てるWindows-firstのtimeline editor / programmable compositorです。
+
+主な責任範囲:
+
+- video / audio media import
+- timeline editing / playback
+- compositing / caption
+- 通常のproject操作を使う再現可能なAI-assisted editing
+- Recipeベースのprogrammable rendering
+- export / final assembly
+
+現在のRepositoryはC#ベースで、初期media scopeは意図的に限定しています。MCPはfirst-class editing surfaceですが、AI専用の別timelineを持たず、アプリ本体のproject/history authorityを共有します。
+
+詳細な実装状況はKachinco側のREADME、architecture docs、Issue、PRを正とします。
+
+## 🧱 共通.NET基盤
+
+Desktopアプリは共通インフラを使いますが、application-domain authorityを共通libraryへ移しません。
+
+```text
+FLAMORIS 2D -----------+
+FLAMORIS Cutwork ------+----> Flamoris.Mcp.Core ----> Flamoris.Logging
+FLAMORIS Kachinco -----+
+          |
+          +-------------------------------> Flamoris.Logging
+```
+
+実際のPackageReference graphは将来変わる可能性があります。重要なのは、**shared libraryはinfraを担当し、各applicationがdomain stateとediting semanticsを持つ**という不変条件です。
+
+### Flamoris.Logging
+
+Repository: [flamoris-jp/flamoris-logging](https://github.com/flamoris-jp/flamoris-logging)
+
+`Flamoris.Logging` は共通のstructured logging / diagnostics基盤です。
+
+Application event、Document、editor state、MCP behaviorのauthorityにはなりません。
+
+現在のpublic package:
+
+```xml
+<PackageReference Include="Flamoris.Logging" Version="1.0.0" />
+```
+
+nuget.orgから公開され、FLAMORIS固有のGitHub Packages認証なしでrestoreできます。
+
+### Flamoris.Mcp.Core
+
+Repository: [flamoris-jp/flamoris-mcp-core](https://github.com/flamoris-jp/flamoris-mcp-core)
+
+`Flamoris.Mcp.Core` はMCP transport、permission / capability、revocation、session attach、request bounds、revision/conflictなど、UI-neutralな共通インフラを提供します。
+
+中心となる不変条件:
+
+> **MCPはhost applicationのauthoritative sessionへのadapterであり、第二のeditorではない。**
+
+現在のpublic package:
+
+```xml
+<PackageReference Include="Flamoris.Mcp.Core" Version="1.1.0" />
+```
+
+こちらもnuget.orgから公開され、FLAMORIS固有のGitHub Packages認証なしでrestoreできます。
+
+## Authority / dependency rules
+
+Desktop familyでは次のルールを守ります。
+
+1. **各applicationが自分のDocument / Project stateを持つ。**  
+   Cutwork、2D、KachincoはCommons、Logging、MCP Core、AI clientへapplication authorityを委譲しません。
+
+2. **各applicationが自分のhistoryを持つ。**  
+   UIとMCPのoperationは通常のmutation / Undo / Redo経路へ合流します。MCP専用の並行historyは作りません。
+
+3. **MCP Coreはinfraを持ち、editing semanticsは持たない。**  
+   Application-specific Command、Query、tool、schema、file operation、domain validationは各application側です。
+
+4. **Loggingは観測するが制御しない。**  
+   Logging failureがapplication-state failureや別source of truthにならないようにします。
+
+5. **Shared packageは小さく保つ。**  
+   実際に複数applicationで共通境界が現れてからshared packageへ切り出します。
+
+6. **AIは明示的なcapabilityのclient。**  
+   AI-assisted editingも人間から見える通常のproduct operationを通り、同じauthorityを使います。
+
+## 🔄 Interoperability / 受け渡し
+
+Desktopアプリは内部project modelを共有するのではなく、明示的なartifactまたはbounded capabilityで接続します。
+
+現在もっとも明確なproduction handoffは:
+
+```text
+Cutwork .flimg
+      |
+      v
+FLAMORIS 2D
+      |
+      v
+rendered shot media
+      |
+      v
+Kachinco timeline
+```
+
+Cutworkと2Dはreview済みの `.flimg` interchange contractでつながります。Kachincoは2Dの内部project stateを所有せず、rendered mediaを受け取ります。
+
+将来の統合も同じ原則で、他applicationの内部authorityへ直接入り込まず、明示的なartifactまたはcapabilityを交換します。
+
+## 📦 Build / package distribution
+
+共通.NET packageはnuget.orgで公開します。
+
+- `Flamoris.Logging 1.0.0`
+- `Flamoris.Mcp.Core 1.1.0`
+
+Desktop repositoryはGitHub PackagesのPATやpackage-read用 `GITHUB_TOKEN`、FLAMORIS専用authenticated NuGet feedなしでrestoreできることを前提にします。
+
+各application固有の正確なbuild / test / packaging / release手順は、そのapplication自身のRepositoryを正とします。
+
+## 🧭 Current-status discipline / ステータス情報の置き場所
+
+この文書は**地図**であって、第二のroadmapではありません。
+
+ここに置くもの:
+
+- Repository responsibility
+- dependency direction
+- 共通architecture invariant
+- cross-application production flow
+
+ここを正にしないもの:
+
+- exact feature completion
+- open bug
+- release readiness
+- test count
+- implementation-specific command
+- near-term roadmap ordering
+
+それらは各RepositoryのREADME、Issue、PR、ADR、status documentを正とします。
+
+## 🤖 FLAMORIS AI ecosystemとの関係
+
+Desktop familyは、明示的なMCP / application boundaryを通して、より広いFLAMORIS AI ecosystemと接続できます。
+
+AI serviceはDesktop product authorityとは別です。
+
+- 組織全体の入口: [flamoris-jp/.github](https://github.com/flamoris-jp/.github)
+- AI側のRepository map / cross-service architecture: [flamoris-jp/flamoris-ai](https://github.com/flamoris-jp/flamoris-ai)
+
+つまり、Desktop側は「制作物を持つアプリ」、AI側は「明示されたcapabilityを使うclient / service」として境界を保ちます。🌱

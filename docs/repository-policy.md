@@ -81,6 +81,37 @@ Each production repository should normally include:
 
 Additional architecture documents should live under `docs/`.
 
+### README entry point
+
+A repository README should make the repository's place in FLAMORIS understandable near the top without forcing a reader to reconstruct the architecture from Issues, source code, or prior chat context.
+
+The exact headings and wording may vary by project, but a production repository should normally make these five questions easy to answer:
+
+1. **What is it? / 何者か**
+   - State the product, service, library, or coordination role in one or two sentences.
+
+2. **What does it own? / 主な責任範囲**
+   - Identify the repository's primary domain responsibility or authority.
+
+3. **What does it not own? / 持たない責任**
+   - Call out important neighboring responsibilities when confusion would otherwise be likely.
+
+4. **What is the current status? / 現在の状態**
+   - Distinguish implemented behavior from planned work, experiments, migration candidates, and release/acceptance state.
+
+5. **Where does it fit? / FLAMORISのどこに属するか**
+   - Link to the relevant organization or family-level map when one exists.
+
+Keep this lightweight. Do not force every README into the same visual template or duplicate large architecture documents at the top of every repository.
+
+Where practical, provide concise Japanese and English entry text so either language can establish the repository's identity and boundaries. Full paragraph-for-paragraph translation is not required when it would make fast-moving technical documentation harder to maintain, but the two languages should not describe materially different responsibilities.
+
+Cross-repository maps are orientation documents, not second roadmaps. They should describe stable responsibility, authority, dependency direction, and interoperability. Fast-changing feature status, exact build commands, release readiness, open bugs, and implementation details remain authoritative in the owning repository.
+
+Shared infrastructure must not be described as owning application or product state merely because several applications depend on it. Product repositories remain authoritative for their own documents/projects, domain behavior, and editing history unless an explicit architecture decision states otherwise.
+
+The organization-level entry map lives in [`flamoris-jp/.github`](https://github.com/flamoris-jp/.github). Family-level maps may add detail without contradicting that top-level map.
+
 ## 7. Licensing
 
 FLAMORIS code is generally released under the Apache License 2.0 unless a repository states otherwise.
