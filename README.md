@@ -54,6 +54,26 @@ Code in this repository is licensed under the [Apache License 2.0](LICENSE), unl
 AI models, model weights, datasets, media, and other non-code assets may use separate licenses. Their applicable licenses must be stated alongside those assets.
 
 
+## Desktop ecosystem
+
+The Windows-oriented FLAMORIS creative applications are documented together in the [Desktop Ecosystem map](docs/desktop-ecosystem.md).
+
+At a high level:
+
+```text
+Cutwork  ->  FLAMORIS 2D  ->  Kachinco
+   \              |               /
+    \             |              /
+     +------ shared foundations --+
+            Logging / MCP Core
+```
+
+The map explains application responsibility, production handoffs, shared .NET dependencies, and the rule that each application remains authoritative for its own document/project state and Undo/Redo history.
+
+Implementation details and fast-changing status remain in each application's own repository.
+
+---
+
 ## Related repositories
 
 - [FLAMORIS 2D](https://github.com/flamoris-jp/flamoris-2D) — 2D animation and character authoring
