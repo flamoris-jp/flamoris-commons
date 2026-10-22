@@ -74,11 +74,20 @@ Implementation details and fast-changing status remain in each application's own
 
 ---
 
+## Windows screen observation / Windows画面観測
+
+[**FLAMORIS Capture**](https://github.com/flamoris-jp/flamoris-capture) is a **planned**, independent Windows screen-observation tool: a reusable capture DLL, a standalone EXE, and an optional MCP interface for approved windows, rectangular regions, or monitors. Planned outputs include screenshots, bounded video, and later opt-in interaction traces.
+
+Capture is *orthogonal* to the `Cutwork → 2D → Kachinco` media pipeline: it observes the actual UI of those tools **or third-party Windows applications**, while their own projects/history remain authoritative. It is not the same as infrastructure [FLAMORIS Observer](https://github.com/flamoris-jp/flamoris-observer) or the shared [MCP Core](https://github.com/flamoris-jp/flamoris-mcp-core) authorization/transport library. **No Capture runtime or release is available yet.**
+
+**日本語:** `flamoris-capture` は、Windowsの実画面をAIと人間が確認するための独立ツール（DLL＋EXE＋MCP）の計画です。静止画・動画・将来の操作履歴を扱い、FLAMORIS以外のソフトにも使える構想。各アプリの内部状態や編集権限、サーバー監視Observerは置き換えません。**現在は設計段階です。**
+
 ## Related repositories
 
 - [FLAMORIS 2D](https://github.com/flamoris-jp/flamoris-2D) — 2D animation and character authoring
 - [FLAMORIS Cutwork](https://github.com/flamoris-jp/flamoris-cutwork) — image decomposition, repair, and part preparation
 - [FLAMORIS Kachinco](https://github.com/flamoris-jp/flamoris-kachinco) — AI-native video editing and compositing
+- [FLAMORIS Capture](https://github.com/flamoris-jp/flamoris-capture) — planned standalone Windows screen capture and MCP observation tool
 - [FLAMORIS Logging](https://github.com/flamoris-jp/flamoris-logging) — shared structured logging and diagnostics foundation
 - [FLAMORIS MCP Core](https://github.com/flamoris-jp/flamoris-mcp-core) — shared MCP infrastructure for FLAMORIS applications and tools
 - [FLAMORIS organization configuration](https://github.com/flamoris-jp/.github) — shared GitHub profile and community health files
