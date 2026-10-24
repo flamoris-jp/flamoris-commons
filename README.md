@@ -76,18 +76,20 @@ Implementation details and fast-changing status remain in each application's own
 
 ## Windows screen observation / Windows画面観測
 
-[**FLAMORIS Capture**](https://github.com/flamoris-jp/flamoris-capture) is a **planned**, independent Windows screen-observation tool: a reusable capture DLL, a standalone EXE, and an optional MCP interface for approved windows, rectangular regions, or monitors. Planned outputs include screenshots, bounded video, and later opt-in interaction traces.
+[**FLAMORIS Capture**](https://github.com/flamoris-jp/flamoris-capture) is an implemented Windows screen-observation tool: a reusable DLL, standalone EXE and MCP adapter over one approved window. It supports screenshots, bounded human-controlled recording, selected frames/contact sheets and opt-in target-window operation traces. The basic Windows/Hub workflow is confirmed; broader lifecycle/platform acceptance and release remain separate.
 
-Capture is *orthogonal* to the `Cutwork → 2D → Kachinco` media pipeline: it observes the actual UI of those tools **or third-party Windows applications**, while their own projects/history remain authoritative. It is not the same as infrastructure [FLAMORIS Observer](https://github.com/flamoris-jp/flamoris-observer) or the shared [MCP Core](https://github.com/flamoris-jp/flamoris-mcp-core) authorization/transport library. **No Capture runtime or release is available yet.**
+Cutwork and 2D reuse the screenshot-only embedded WPF component: their normal MCP attachment authorizes observation of that editor's owner window, with a visible sharing indicator. Standalone Capture keeps its separate sharing/operation controls. Region/monitor capture, audio and input replay are outside the current implementation.
 
-**日本語:** `flamoris-capture` は、Windowsの実画面をAIと人間が確認するための独立ツール（DLL＋EXE＋MCP）の計画です。静止画・動画・将来の操作履歴を扱い、FLAMORIS以外のソフトにも使える構想。各アプリの内部状態や編集権限、サーバー監視Observerは置き換えません。**現在は設計段階です。**
+Capture observes actual UI, including third-party applications, alongside the `Cutwork → 2D → Kachinco` media pipeline. It leaves project/history ownership with each editor, MCP infrastructure with [MCP Core](https://github.com/flamoris-jp/flamoris-mcp-core), and server monitoring with [Observer](https://github.com/flamoris-jp/flamoris-observer). Current scope and acceptance: [Capture README](https://github.com/flamoris-jp/flamoris-capture) and [Windows acceptance](https://github.com/flamoris-jp/flamoris-capture/blob/main/docs/WINDOWS-ACCEPTANCE.md).
+
+**日本語:** DLL＋独立EXE＋MCPの実装があり、許可した1ウィンドウの静止画・録画・選択フレーム・操作記録を扱います。Cutwork・2DにはMCP接続と連動する自アプリ画面観測を組込み済み。基本動作の実機確認と、未確認の失効・保存・環境別受入は分けて記録し、stable判定・正式バイナリ配布も別に扱います。矩形・モニター撮影は将来機能です。
 
 ## Related repositories
 
 - [FLAMORIS 2D](https://github.com/flamoris-jp/flamoris-2D) — 2D animation and character authoring
 - [FLAMORIS Cutwork](https://github.com/flamoris-jp/flamoris-cutwork) — image decomposition, repair, and part preparation
 - [FLAMORIS Kachinco](https://github.com/flamoris-jp/flamoris-kachinco) — AI-native video editing and compositing
-- [FLAMORIS Capture](https://github.com/flamoris-jp/flamoris-capture) — planned standalone Windows screen capture and MCP observation tool
+- [FLAMORIS Capture](https://github.com/flamoris-jp/flamoris-capture) — Windows approved-window screenshots, bounded recording and MCP observation
 - [FLAMORIS Logging](https://github.com/flamoris-jp/flamoris-logging) — shared structured logging and diagnostics foundation
 - [FLAMORIS MCP Core](https://github.com/flamoris-jp/flamoris-mcp-core) — shared MCP infrastructure for FLAMORIS applications and tools
 - [FLAMORIS organization configuration](https://github.com/flamoris-jp/.github) — shared GitHub profile and community health files
