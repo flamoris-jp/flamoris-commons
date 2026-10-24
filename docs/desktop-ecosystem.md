@@ -95,6 +95,14 @@ The current repository is C#-based and supports the intentionally narrow initial
 
 Detailed implementation status remains in the Kachinco README, architecture docs, Issues, and PRs.
 
+### FLAMORIS Capture — screen observation
+
+Repository: [flamoris-jp/flamoris-capture](https://github.com/flamoris-jp/flamoris-capture)
+
+Capture supplies a standalone EXE and reusable Windows capture components for one approved window. Human-controlled recording, selective frame/contact-sheet observation and optional target-window input traces complement domain-specific MCP. Cutwork and 2D embed its WPF screenshot component under their existing MCP attachment, observing only their owner window; standalone Capture uses separate sharing and operation controls.
+
+Capture owns observation sessions and pixels, each editor owns its project/history, and MCP Core owns transport/grants. It does not replace infrastructure Observer. Region/monitor capture is future scope. See Capture's own README and acceptance record for current limits; no stable-release claim is made by this map.
+
 ## Shared foundations
 
 The desktop applications share infrastructure without moving application-domain authority into common libraries.
@@ -326,6 +334,12 @@ Kachincoは、映像を組み立てるWindows-firstのtimeline editor / programm
 現在のRepositoryはC#ベースで、初期media scopeは意図的に限定しています。MCPはfirst-class editing surfaceですが、AI専用の別timelineを持たず、アプリ本体のproject/history authorityを共有します。
 
 詳細な実装状況はKachinco側のREADME、architecture docs、Issue、PRを正とします。
+
+### FLAMORIS Capture — 実画面の観測
+
+[flamoris-capture](https://github.com/flamoris-jp/flamoris-capture) は、許可した1ウィンドウの静止画、明示録画、選択フレーム・コンタクトシート、任意の対象限定操作記録を扱うDLL＋独立EXE＋MCPです。Cutwork・2Dでは既存MCP接続と連動するWPF部品で自アプリの画面を観測し、独立EXEでは画面共有・操作記録を個別に許可します。
+
+Captureは観測セッションと画素、各editorはproject/history、MCP Coreはtransport/grantを担当します。サーバー監視Observerや各editorのdomain MCPを置き換えません。矩形・モニター撮影は将来機能で、実機受入・release状況はCapture本体を正とします。
 
 ## 🧱 共通.NET基盤
 
