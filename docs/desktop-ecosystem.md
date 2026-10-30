@@ -99,7 +99,7 @@ Detailed implementation status remains in the Kachinco README, architecture docs
 
 Repository: [flamoris-jp/flamoris-capture](https://github.com/flamoris-jp/flamoris-capture)
 
-Capture supplies a standalone EXE and reusable Windows capture components for one approved window. Human-controlled recording, selective frame/contact-sheet observation and optional target-window input traces complement domain-specific MCP. Cutwork and 2D embed its WPF screenshot component under their existing MCP attachment, observing only their owner window; standalone Capture uses separate sharing and operation controls.
+Capture supplies a standalone EXE and reusable Windows capture components for one approved window. Human-controlled recording, selective frame/contact-sheet observation and optional target-window input traces complement domain-specific MCP. Cutwork and 2D embed its WPF screenshot component under their existing MCP transport, with independent explicit owner-window sharing consent; standalone Capture uses separate sharing and operation controls.
 
 Capture owns observation sessions and pixels, each editor owns its project/history, and MCP Core owns transport/grants. It does not replace infrastructure Observer. Region/monitor capture is future scope. See Capture's own README and acceptance record for current limits; no stable-release claim is made by this map.
 
@@ -337,7 +337,7 @@ Kachincoは、映像を組み立てるWindows-firstのtimeline editor / programm
 
 ### FLAMORIS Capture — 実画面の観測
 
-[flamoris-capture](https://github.com/flamoris-jp/flamoris-capture) は、許可した1ウィンドウの静止画、明示録画、選択フレーム・コンタクトシート、任意の対象限定操作記録を扱うDLL＋独立EXE＋MCPです。Cutwork・2Dでは既存MCP接続と連動するWPF部品で自アプリの画面を観測し、独立EXEでは画面共有・操作記録を個別に許可します。
+[flamoris-capture](https://github.com/flamoris-jp/flamoris-capture) は、許可した1ウィンドウの静止画、明示録画、選択フレーム・コンタクトシート、任意の対象限定操作記録を扱うDLL＋独立EXE＋MCPです。Cutwork・2DではMCP接続と共有許可を分離したWPF部品へ移行し、自アプリの画面を明示的に共有し、独立EXEでは画面共有・操作記録を個別に許可します。
 
 Captureは観測セッションと画素、各editorはproject/history、MCP Coreはtransport/grantを担当します。サーバー監視Observerや各editorのdomain MCPを置き換えません。矩形・モニター撮影は将来機能で、実機受入・release状況はCapture本体を正とします。
 
@@ -477,3 +477,8 @@ AI serviceはDesktop product authorityとは別です。
 - AI側のRepository map / cross-service architecture: [flamoris-jp/flamoris-ai](https://github.com/flamoris-jp/flamoris-ai)
 
 つまり、Desktop側は「制作物を持つアプリ」、AI側は「明示されたcapabilityを使うclient / service」として境界を保ちます。🌱
+
+
+## MCP lifecycle migration
+
+See [Desktop MCP lifecycle](desktop-mcp-lifecycle.md) for the independent connection/content/target contract, the application inventory, owning Issues/PRs and coordinated rollout. Current implementation candidates and physical acceptance remain owned by each product.
