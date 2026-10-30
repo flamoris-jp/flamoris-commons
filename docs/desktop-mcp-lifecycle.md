@@ -29,7 +29,11 @@ Every request pins the target at admission. Mutations require current runtime/do
 4. The temporary pre-publication source feed is removed before rollout. Consumer CI validates ordinary nuget.org restores of Core/Wpf 1.4.0; no private feed, extra repository clone or copied shared DLL is required on a workstation.
 5. Perform physical Windows checks: startup/no file, connect/reconnect, sharing toggles, content withdrawal during work, file open/close/switch/same-file reopen, stale guards, shutdown. CI and real-user acceptance remain separate evidence.
 
-Issue #8 remains open until workstation update and physical user acceptance are recorded; source/CI acceptance and package publication are tracked separately.
+The implementation PRs and package publication are complete. On 2026-10-30 the user
+reported rebuilding and launching all updated desktop apps, then requested issue
+closure. That records workstation build/startup acceptance. Full physical content
+withdrawal, WGC/input and platform tests remain separate evidence in the owning
+repositories; no unreported case is marked physically verified.
 
 
 ## Windows update
@@ -50,4 +54,6 @@ Launch the new build under `artifacts/windows`. The Kachinco package includes Ki
 - MCP Core/Wpf 1.4.0: MCP Core #17, accepted source `50cb59e4ec73878cd7a62a96e8633a1445e89f6c`; both public package index/download endpoints verified and release workflow succeeded.
 - Capture: #12, accepted main `159c3586f8075e70f6cd4e82d08b54f138952567`; Cutwork/2D use this exact gitlink.
 - Consumer CI uses ordinary public NuGet restore. Publication initially exceeded the short index-propagation wait; the final verification and public-restore gates, rather than upload acknowledgement alone, establish availability.
-- Workstation update and physical user acceptance remain pending.
+- Workstation update: user-reported build/startup completed on 2026-10-30.
+  The lifecycle implementation is accepted for closure; broader physical test
+  matrices remain in the owning repositories and are not inferred from startup.

@@ -78,11 +78,11 @@ Implementation details and fast-changing status remain in each application's own
 
 [**FLAMORIS Capture**](https://github.com/flamoris-jp/flamoris-capture) is an implemented Windows screen-observation tool: a reusable DLL, standalone EXE and MCP adapter over one approved window. It supports screenshots, bounded human-controlled recording, selected frames/contact sheets and opt-in target-window operation traces. The basic Windows/Hub workflow is confirmed; broader lifecycle/platform acceptance and release remain separate.
 
-Cutwork and 2D reuse the screenshot-only embedded WPF component: the application-lifetime migration gives observation a separate explicit sharing checkbox; MCP attachment alone does not authorize pixels (see the [coordinated lifecycle contract](docs/desktop-mcp-lifecycle.md)). Standalone Capture keeps its separate sharing/operation controls. Region/monitor capture, audio and input replay are outside the current implementation.
+Cutwork and 2D reuse the screenshot-only embedded WPF component: the implemented application-lifetime policy gives observation a separate explicit sharing checkbox; MCP attachment alone does not authorize pixels (see the [coordinated lifecycle contract](docs/desktop-mcp-lifecycle.md)). Standalone Capture keeps its separate sharing/operation controls. Region/monitor capture, audio and input replay are outside the current implementation.
 
 Capture observes actual UI, including third-party applications, alongside the `Cutwork → 2D → Kachinco` media pipeline. It leaves project/history ownership with each editor, MCP infrastructure with [MCP Core](https://github.com/flamoris-jp/flamoris-mcp-core), and server monitoring with [Observer](https://github.com/flamoris-jp/flamoris-observer). Current scope and acceptance: [Capture README](https://github.com/flamoris-jp/flamoris-capture) and [Windows acceptance](https://github.com/flamoris-jp/flamoris-capture/blob/main/docs/WINDOWS-ACCEPTANCE.md).
 
-**日本語:** DLL＋独立EXE＋MCPの実装があり、許可した1ウィンドウの静止画・録画・選択フレーム・操作記録を扱います。Cutwork・2Dの自アプリ画面観測は、[共通ライフサイクル契約](docs/desktop-mcp-lifecycle.md)に従いMCP接続と画面共有許可を分離する移行中です。基本動作の実機確認と、未確認の失効・保存・環境別受入は分けて記録し、stable判定・正式バイナリ配布も別に扱います。矩形・モニター撮影は将来機能です。
+**日本語:** DLL＋独立EXE＋MCPの実装があり、許可した1ウィンドウの静止画・録画・選択フレーム・操作記録を扱います。Cutwork・2Dの自アプリ画面観測は、[共通ライフサイクル契約](docs/desktop-mcp-lifecycle.md)に従いMCP接続と画面共有許可を分離する実装が完了しています。基本動作の実機確認と、未確認の失効・保存・環境別受入は分けて記録し、stable判定・正式バイナリ配布も別に扱います。矩形・モニター撮影は将来機能です。
 
 ## Related repositories
 
