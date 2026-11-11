@@ -193,6 +193,20 @@ Do not commit build outputs, local caches, secrets, machine-specific state, or l
 
 GitHub Actions artifacts should use short retention periods unless there is a documented reason to keep them longer.
 
+### 12.1 Audio and video storage
+
+Audio/video files must not be committed to FLAMORIS research or production repositories. This includes MP3, MP4, WAV, FLAC, AAC, M4A, OGG, Opus, MOV, WebM, MKV and equivalent formats, regardless of file size, ownership, license, or whether they are original works, generated previews, reference clips, stems, demos, or synthetic test samples. Licensing review is separate from this storage rule and does not waive it.
+
+Do not bypass this rule with force-adds, ignore exceptions, Git LFS pointers, renamed files, Base64/text encoding, or archives containing media. Keep media in approved storage outside Git, with appropriate rights and retention. Commit source/reference identifiers or stable locations, SHA-256 digests, provenance/license records, analysis metadata, scripts and small text/symbolic fixtures instead. References must not include credentials or expiring signed access tokens. Generate temporary synthetic media during tests when required.
+
+Each research/production repository and the repository template should include case-insensitive audio/video ignores and an explicit AGENTS rule. A lightweight PR check may inspect the complete tracked filename set to catch force-added media and LFS pointers. Such a check is not a content/archive scanner, a server-side push restriction, or automatic history cleanup. Whether a check is a required merge condition must be configured separately. Avoid duplicate post-merge checks; paused projects may receive policy/ignore maintenance without resuming feature work.
+
+MPEG transport streams using `.ts` remain prohibited as media, but `*.ts` must not be blanket-ignored because TypeScript uses the same extension. The common filename check covers unambiguous common media extensions; content review remains necessary for disguised files. Images, MIDI, declarative project data and other assets retain their separate repository-specific size/licensing policies.
+
+Deleting media from a branch tip does not remove historical Git blobs or immediately reduce repository size. Audit and preserve an external copy before separately authorizing any history rewrite. Do not delete or move external media/NAS assets merely to enforce this repository policy.
+
+**日本語:** 研究・制作リポジトリへの音声・動画実体のコミットは禁止です。自作・生成物・短いサンプルも含み、ライセンス確認済みでも例外にはしません。実体はGitの外に保存し、参照先・SHA-256・出典・権利情報・解析結果を記録します。Git LFSや圧縮・改名での回避も禁止します。通常の追加はignore、強制追加はPRのファイル名検査で検出し、過去履歴の整理や外部素材の移動・削除は別途扱います。
+
 ## 13. AI-assisted development
 
 AI tools may be used for implementation, review, testing, documentation, and support.
